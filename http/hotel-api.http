@@ -1,0 +1,30 @@
+###CREATE HOTEL
+POST http://localhost:8092/property-view/hotels
+Content-Type: application/json
+
+{
+  "name": "DoubleTree by Hilton Minsk",
+  "description": "The DoubleTree by Hilton Hotel Minsk offers 193 luxurious rooms in the Belorussian capital and stunning views of Minsk city from the hotel's 20th floor ...",
+  "brand": "Hilton",
+  "address": {
+    "houseNumber": 9,
+    "street": "Pobediteley Avenue",
+    "city": "Minsk",
+    "country": "Belarus",
+    "postCode": "220004"
+  },
+  "contacts": {
+    "phone": "+375 17 309-80-00",
+    "email": "doubletreeminsk.info@hilton.com"
+  },
+  "arrivalTime": {
+    "checkIn": "14:00",
+    "checkOut": "12:00"
+  }
+}
+###GET SUMMARY OF ALL HOTELS
+GET http://localhost:8092/property-view/hotels
+###GET DETAILS OF HOTEL BY ID
+GET http://localhost:8092/property-view/hotels/1
+###SEARCH HOTELD BY FILTERS name, brand, city, country, amenities
+GET http://localhost:8092/property-view/search?city=minsk
