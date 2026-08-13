@@ -1,4 +1,4 @@
-###CREATE HOTEL
+### 1. Create Hilton Minsk (full body)
 POST http://localhost:8092/property-view/hotels
 Content-Type: application/json
 
@@ -22,9 +22,292 @@ Content-Type: application/json
     "checkOut": "12:00"
   }
 }
-###GET SUMMARY OF ALL HOTELS
+
+### 2. Create Marriott Moscow (no description — optional field)
+POST http://localhost:8092/property-view/hotels
+Content-Type: application/json
+
+{
+  "name": "Moscow Marriott Hotel",
+  "brand": "Marriott",
+  "address": {
+    "houseNumber": 26,
+    "street": "Tverskaya Street",
+    "city": "Moskow",
+    "country": "Russia",
+    "postCode": "125009"
+  },
+  "contacts": {
+    "phone": "+7 495 937-00-00",
+    "email": "moscow.marriott@example.com"
+  },
+  "arrivalTime": {
+    "checkIn": "15:00"
+  }
+}
+
+### 3. Create second Marriott in Moscow
+POST http://localhost:8092/property-view/hotels
+Content-Type: application/json
+
+{
+  "name": "Courtyard Moscow City Center",
+  "description": "Business hotel near Red Square",
+  "brand": "Marriott",
+  "address": {
+    "houseNumber": 7,
+    "street": "Voznesenskiy Lane",
+    "city": "Moskow",
+    "country": "Russia",
+    "postCode": "125009"
+  },
+  "contacts": {
+    "phone": "+7 495 981-33-00",
+    "email": "courtyard.moscow@example.com"
+  },
+  "arrivalTime": {
+    "checkIn": "14:00",
+    "checkOut": "12:00"
+  }
+}
+
+### 4. Create hotel in Mogilev
+POST http://localhost:8092/property-view/hotels
+Content-Type: application/json
+
+{
+  "name": "Hotel Mogilev",
+  "description": "Comfortable stay in Mogilev",
+  "brand": "Local Hotels",
+  "address": {
+    "houseNumber": 6,
+    "street": "Pervomayskaya Street",
+    "city": "Mogilev",
+    "country": "Belarus",
+    "postCode": "212030"
+  },
+  "contacts": {
+    "phone": "+375 222 22-22-22",
+    "email": "info@mogilev-hotel.by"
+  },
+  "arrivalTime": {
+    "checkIn": "13:00",
+    "checkOut": "11:00"
+  }
+}
+
+### 5. Get all hotels summary
 GET http://localhost:8092/property-view/hotels
-###GET DETAILS OF HOTEL BY ID
+
+### 6. Get hotel details by id = 1
 GET http://localhost:8092/property-view/hotels/1
-###SEARCH HOTELD BY FILTERS name, brand, city, country, amenities
+
+### 7. Get hotel details by id = 2
+GET http://localhost:8092/property-view/hotels/2
+
+### 8. Add amenities to hotel 1
+POST http://localhost:8092/property-view/hotels/1/amenities
+Content-Type: application/json
+
+[
+  "Free parking",
+  "Free WiFi",
+  "Non-smoking rooms",
+  "Concierge",
+  "On-site restaurant",
+  "Fitness center",
+  "Pet-friendly rooms",
+  "Room service",
+  "Business center",
+  "Meeting rooms"
+]
+
+### 9. Add amenities to hotel 2
+POST http://localhost:8092/property-view/hotels/2/amenities
+Content-Type: application/json
+
+[
+  "Free WiFi",
+  "Non-smoking rooms",
+  "Fitness center",
+  "Room service"
+]
+
+### 10. Add amenities to hotel 3
+POST http://localhost:8092/property-view/hotels/3/amenities
+Content-Type: application/json
+
+[
+  "Free WiFi",
+  "Free parking",
+  "Business center"
+]
+
+### 11. Add amenities to hotel 4
+POST http://localhost:8092/property-view/hotels/4/amenities
+Content-Type: application/json
+
+[
+  "Free WiFi",
+  "Non-smoking rooms"
+]
+
+### 12. Check details after amenities (hotel 1)
+GET http://localhost:8092/property-view/hotels/1
+
+### 13. Search by city = minsk
 GET http://localhost:8092/property-view/search?city=minsk
+
+### 14. Search by city = Moskow
+GET http://localhost:8092/property-view/search?city=Moskow
+
+### 15. Search by brand = Marriott
+GET http://localhost:8092/property-view/search?brand=Marriott
+
+### 16. Search by country = Belarus
+GET http://localhost:8092/property-view/search?country=Belarus
+
+### 17. Search by name
+GET http://localhost:8092/property-view/search?name=Hotel%20Mogilev
+
+### 18. Search by amenity
+GET http://localhost:8092/property-view/search?amenities=Free%20WiFi
+
+### 19. Search by city + brand
+GET http://localhost:8092/property-view/search?city=Moskow&brand=Marriott
+
+### 20. Search with pagination
+GET http://localhost:8092/property-view/search?pageSize=2&pageNumber=0
+
+### 21. Search with no filters (all hotels)
+GET http://localhost:8092/property-view/search
+
+### 22. Histogram by city
+GET http://localhost:8092/property-view/histogram/city
+
+### 23. Histogram by brand
+GET http://localhost:8092/property-view/histogram/brand
+
+### 24. Histogram by country
+GET http://localhost:8092/property-view/histogram/country
+
+### 25. Histogram by amenities
+GET http://localhost:8092/property-view/histogram/amenities
+
+### ERROR CASES
+
+### 26. ERROR — hotel not found
+GET http://localhost:8092/property-view/hotels/999
+
+### 27. ERROR — invalid hotel id in path
+GET http://localhost:8092/property-view/hotels/abc
+
+### 28. ERROR — create without name (expect 400)
+POST http://localhost:8092/property-view/hotels
+Content-Type: application/json
+
+{
+  "brand": "Hilton",
+  "address": {
+    "houseNumber": 1,
+    "street": "Test Street",
+    "city": "Minsk",
+    "country": "Belarus",
+    "postCode": "220000"
+  },
+  "contacts": {
+    "phone": "+375 17 000-00-00",
+    "email": "test@example.com"
+  },
+  "arrivalTime": {
+    "checkIn": "14:00",
+    "checkOut": "12:00"
+  }
+}
+
+### 29. ERROR — create without brand (expect 400)
+POST http://localhost:8092/property-view/hotels
+Content-Type: application/json
+
+{
+  "name": "Broken Hotel",
+  "address": {
+    "houseNumber": 1,
+    "street": "Test Street",
+    "city": "Minsk",
+    "country": "Belarus",
+    "postCode": "220000"
+  },
+  "contacts": {
+    "phone": "+375 17 000-00-00",
+    "email": "test@example.com"
+  },
+  "arrivalTime": {
+    "checkIn": "14:00"
+  }
+}
+
+### 30. ERROR — create without checkIn (expect 400)
+POST http://localhost:8092/property-view/hotels
+Content-Type: application/json
+
+{
+  "name": "Broken Hotel",
+  "brand": "Hilton",
+  "address": {
+    "houseNumber": 1,
+    "street": "Test Street",
+    "city": "Minsk",
+    "country": "Belarus",
+    "postCode": "220000"
+  },
+  "contacts": {
+    "phone": "+375 17 000-00-00",
+    "email": "test@example.com"
+  },
+  "arrivalTime": {
+    "checkOut": "12:00"
+  }
+}
+
+### 31. ERROR — create without address (expect 400)
+POST http://localhost:8092/property-view/hotels
+Content-Type: application/json
+
+{
+  "name": "Broken Hotel",
+  "brand": "Hilton",
+  "contacts": {
+    "phone": "+375 17 000-00-00",
+    "email": "test@example.com"
+  },
+  "arrivalTime": {
+    "checkIn": "14:00"
+  }
+}
+
+### 32. ERROR — create with empty JSON body (expect 400)
+POST http://localhost:8092/property-view/hotels
+Content-Type: application/json
+
+{}
+
+### 33. ERROR — create with invalid JSON (expect 400)
+POST http://localhost:8092/property-view/hotels
+Content-Type: application/json
+
+{ "name": "Broken"
+
+### 34. ERROR — add amenities to missing hotel (expect 500/404)
+POST http://localhost:8092/property-view/hotels/999/amenities
+Content-Type: application/json
+
+[
+  "Free WiFi"
+]
+
+### 35. ERROR — unsupported histogram param (expect 500/400)
+GET http://localhost:8092/property-view/histogram/stars
+
+### 36. ERROR — wrong search path (should NOT match /search; expect 404)
+GET http://localhost:8092/property-view/hotels/search?city=minsk

@@ -1,4 +1,4 @@
-package evaanufr.dev.springboothotelserviceapp.api;
+package evaanufr.dev.springboothotelserviceapp.repository;
 
 import evaanufr.dev.springboothotelserviceapp.domain.HotelEntity;
 import org.springframework.data.domain.Pageable;
@@ -28,4 +28,12 @@ public interface HotelRepository extends JpaRepository<HotelEntity, Long> {
             @Param("amenities") String amenities,
             Pageable pageable
     );
+    @Query("select h.brand, count(h) from HotelEntity h group by h.brand")
+    List<Object[]> getHistogramByBrand();
+    @Query("select h.address.city, count(h) from HotelEntity h group by h.address.city")
+    List<Object[]> getHistogramByCity();
+    @Query("select h.address.country, count(h) from HotelEntity h group by h.address.country")
+    List<Object[]> getHistogramByCountry();
+    @Query("select a, count(h) from HotelEntity h join h.amenities a group by a")
+    List<Object[]> getHistogramByAmenities();
 }

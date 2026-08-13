@@ -1,5 +1,6 @@
-package evaanufr.dev.springboothotelserviceapp.api.dto;
+package evaanufr.dev.springboothotelserviceapp.domain.mapper;
 
+import evaanufr.dev.springboothotelserviceapp.api.dto.*;
 import evaanufr.dev.springboothotelserviceapp.domain.Address;
 import evaanufr.dev.springboothotelserviceapp.domain.ArrivalTime;
 import evaanufr.dev.springboothotelserviceapp.domain.Contacts;
@@ -7,6 +8,8 @@ import evaanufr.dev.springboothotelserviceapp.domain.HotelEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class Mapper {
@@ -103,5 +106,11 @@ public class Mapper {
                 address.getPostCode(),
                 address.getCountry()
         );
+    }
+    public Map<String, Long> toMap(List<Object[]> listObj) {
+        return listObj.stream().collect(Collectors.toMap(
+                row->(String) row[0],
+                row->(Long) row[1]
+        ));
     }
 }

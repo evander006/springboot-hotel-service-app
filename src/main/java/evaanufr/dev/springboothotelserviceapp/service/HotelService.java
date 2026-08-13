@@ -1,5 +1,7 @@
-package evaanufr.dev.springboothotelserviceapp.api;
+package evaanufr.dev.springboothotelserviceapp.service;
 
+import evaanufr.dev.springboothotelserviceapp.domain.mapper.Mapper;
+import evaanufr.dev.springboothotelserviceapp.repository.HotelRepository;
 import evaanufr.dev.springboothotelserviceapp.api.dto.*;
 import evaanufr.dev.springboothotelserviceapp.domain.HotelEntity;
 import org.springframework.data.domain.Pageable;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 @Service
@@ -54,6 +57,22 @@ public class HotelService {
     }
 
     public void addAmenitiesToHotel(Long id,List<String> amenities) {
-        
+        var hotelById=hotelRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Hotel not found: " + id));
+        hotelById.setAmenities(amenities);
+        hotelRepository.save(hotelById);
     }
+
+    public Map<String, Long> getHotelsHistogram(String param) {
+        return switch (param){
+            case "city"->mapper.toMap(hotelRepository.getHistogramByCity());
+            case "brand" -> mapper.toMap(hotelRepository.getHistogramByBrand());
+            case "country" -> mapper.toMap(hotelRepository.getHistogramByCountry());
+            case "amenities" -> mapper.toMap(hotelRepository.getHistogramByAmenities());
+            default -> throw new IllegalArgumentException(
+                    "Unsupported histogram param: " + param
+            );
+        };
+    }
+
+
 }
