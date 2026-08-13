@@ -13,6 +13,7 @@ Base URL: `http://localhost:8092/property-view`
 - Maven
 - Springdoc OpenAPI (Swagger UI)
 - Validation / Lombok
+- Liquidbase
 
 ## Requirements
 
