@@ -56,10 +56,19 @@ public class HotelService {
         return allHotels.stream().map(mapper::toSummaryResponse).toList();
     }
 
-    public void addAmenitiesToHotel(Long id,List<String> amenities) {
-        var hotelById=hotelRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Hotel not found: " + id));
-        hotelById.setAmenities(amenities);
-        hotelRepository.save(hotelById);
+    @Transactional
+    public void addAmenitiesToHotel(Long id, List<String> amenities) {
+        var hotel = hotelRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Hotel not found: " + id));
+        if (amenities == null || amenities.isEmpty()) {
+            return;
+        }
+        List<String> existing = hotel.getAmenities();
+        for (String amenity : amenities) {
+            if (amenity != null && !existing.contains(amenity)) {
+                existing.add(amenity);
+            }
+        }
     }
 
     public Map<String, Long> getHotelsHistogram(String param) {
